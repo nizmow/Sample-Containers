@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using Autofac;
 using GreenPipes;
+using GreenPipes.Filters.Log;
 using MassTransit;
 using MassTransit.Saga;
 using MassTransit.Util;
@@ -85,7 +86,15 @@ namespace Sample_Autofac
 
         static IBusControl BusFactory(IComponentContext context)
         {
-            return Bus.Factory.CreateUsingInMemory(cfg => cfg.ConfigureEndpoints(context));
+            return Bus.Factory.CreateUsingRabbitMq(cfg =>
+            {
+                cfg.Host(new Uri("rabbitmq://localhost"), busConfig =>
+                {
+                    busConfig.Username("guest");
+                    busConfig.Password("guest");
+                });
+                cfg.ConfigureEndpoints(context);
+            });
         }
     }
 }

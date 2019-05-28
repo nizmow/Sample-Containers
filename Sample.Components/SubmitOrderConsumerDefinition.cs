@@ -9,6 +9,11 @@ namespace Sample.Components
     public class SubmitOrderConsumerDefinition :
         ConsumerDefinition<SubmitOrderConsumer>
     {
+        public SubmitOrderConsumerDefinition()
+        {
+            ConcurrencyLimit = 500;
+        }
+        
         protected override void ConfigureConsumer(IReceiveEndpointConfigurator endpointConfigurator,
             IConsumerConfigurator<SubmitOrderConsumer> consumerConfigurator)
         {
